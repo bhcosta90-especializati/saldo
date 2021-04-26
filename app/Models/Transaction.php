@@ -10,7 +10,13 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'value'
+        'amount',
+        'total_before',
+        'total_after',
+        'date',
+        'type',
+        'transaction_to_type',
+        'transaction_to_id',
     ];
 
     /**

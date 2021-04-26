@@ -21,4 +21,8 @@ class UserService {
     public function withdraw(array $data){
         $this->userContract->withdraw($this->request->user()->id, $data['value']);
     }
+
+    public function balance(){
+        return $this->userContract->balance($this->request->user()->id);
+    }
 }

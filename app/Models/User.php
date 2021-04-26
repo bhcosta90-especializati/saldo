@@ -58,9 +58,9 @@ class User extends Authenticatable
         return $this->morphMany(Transaction::class, 'transaction');
     }
 
-    public function scopeMyBalance($b, $formated = false)
+    public function scopeMyBalance($b, $formated = false): float|string
     {
-        $ret = $b->where('users.id', $this->id)
+        $ret = (float) $b->where('users.id', $this->id)
             ->select(['balance.amount'])
             ->join('balance', 'users.id', '=', 'balance.balance_id')
             ->where('balance.balance_type', User::class)

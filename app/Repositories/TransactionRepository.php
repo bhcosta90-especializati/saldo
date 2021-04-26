@@ -19,16 +19,4 @@ class TransactionRepository extends BaseRepository implements Contracts\Transact
     {
         return Transaction::class;
     }
-
-    public function deposit(float $value) {
-        $this->model->create([
-            'value' => $value
-        ]);
-    }
-
-    public function withdraw(float $value) {
-        $this->model->create([
-            'value' => $value
-        ]);
-    }
 }

@@ -16,7 +16,12 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->morphs('transaction');
-            $table->decimal('value', 40, 3);
+            $table->nullableMorphs('transaction_to');
+            $table->decimal('amount', 40, 3);
+            $table->enum('type', ['I', 'O', 'T']);
+            $table->decimal('total_before', 40, 3);
+            $table->decimal('total_after', 40, 3);
+            $table->date('date');
             $table->timestamps();
         });
     }
