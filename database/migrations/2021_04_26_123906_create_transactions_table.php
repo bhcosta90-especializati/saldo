@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->morphs('transaction');
+            $table->decimal('value', 40, 3);
             $table->timestamps();
         });
     }

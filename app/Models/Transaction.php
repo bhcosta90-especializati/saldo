@@ -9,11 +9,19 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'value'
+    ];
+
     /**
      * Get the parent imageable model (user or post).
      */
     public function transaction()
     {
         return $this->morphTo();
+    }
+
+    public function deposit($value){
+        dd($value);
     }
 }

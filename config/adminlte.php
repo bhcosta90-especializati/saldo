@@ -242,6 +242,7 @@ return [
                     'text' => 'Saldo',
                     'icon' => 'fas fa-credit-card',
                     'url'  => '/admin/balance',
+                    'active' => ['admin/balance/*']
                 ],
                 [
                     'text' => 'Histórico',

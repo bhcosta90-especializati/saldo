@@ -9,7 +9,6 @@ class BalanceController extends Controller
 {
     public function index(Request $request){
         $balance = $request->user()->myBalance(true);
-        
         return view('admin.balance.index', compact('balance'));
     }
 }

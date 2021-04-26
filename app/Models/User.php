@@ -55,7 +55,7 @@ class User extends Authenticatable
      */
     public function transactions()
     {
-        return $this->morphMany(Transaction::class, 'transactions');
+        return $this->morphMany(Transaction::class, 'transaction');
     }
 
     public function scopeMyBalance($b, $formated = false)

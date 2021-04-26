@@ -19,5 +19,15 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home.index');
-    Route::get('/balance', [App\Http\Controllers\Admin\BalanceController::class, 'index'])->name('balance.index');
+    Route::group(['as' => 'balance.', 'prefix' => 'balance'], function(){
+        Route::get('/', [App\Http\Controllers\Admin\BalanceController::class, 'index'])->name('index');
+        Route::group(['as' => 'deposit.', 'prefix' => "deposit"], function(){
+            Route::get('/balance', [App\Http\Controllers\Admin\Balance\DepositController::class, 'index'])->name('index');
+            Route::post('/balance', [App\Http\Controllers\Admin\Balance\DepositController::class, 'store'])->name('store');
+        });
+        Route::group(['as' => 'withdraw.', 'prefix' => "withdraw"], function(){
+            Route::get('/balance', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'index'])->name('index');
+            Route::post('/balance', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'store'])->name('store');
+        });
+    });
 });
