@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::get('/', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home.index');
+    Route::get('/transactions', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('transaction.index');
+
     Route::group(['as' => 'balance.', 'prefix' => 'balance'], function(){
         Route::get('/', [App\Http\Controllers\Admin\BalanceController::class, 'index'])->name('index');
         Route::group(['as' => 'deposit.', 'prefix' => "deposit"], function(){

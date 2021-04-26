@@ -36,5 +36,7 @@ class DepositController extends Controller
 
         $values = $form->getFieldValues();
         $transaction->deposit($values);
+
+        return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
     }
 }

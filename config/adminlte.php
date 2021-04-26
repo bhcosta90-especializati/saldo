@@ -247,7 +247,7 @@ return [
                 [
                     'text' => 'Histórico',
                     'icon' => 'fas fa-history',
-                    'url'  => '#',
+                    'url'  => 'admin/transactions',
                 ]
             ]
         ],
