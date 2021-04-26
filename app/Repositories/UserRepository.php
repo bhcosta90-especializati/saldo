@@ -4,7 +4,9 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 
@@ -56,9 +58,13 @@ class UserRepository extends BaseRepository implements Contracts\UserContract
             $objUser = $this->getById($user);
             $totalBefore = $objUser->myBalance();
 
+            if ($totalBefore < $value) {
+                throw new Exception(__('Saldo insuficiente.'), Response::HTTP_BAD_REQUEST);
+            }
+
             $objBalance = $objUser->balance()->firstOrCreate();
             if (!$objBalance->withdraw($value)) {
-                throw new Exception(__('Aconteceu um problema no saque'));
+                throw new Exception(__('Aconteceu um problema no saque'), Response::HTTP_BAD_REQUEST);
             }
 
             $objUser->transactions()->create([

@@ -14,9 +14,11 @@
 
 <div class="small-box bg-gray">
     <div class="inner">
-        <h3>R$ {{ $balance }}</h3>
+        <h3>R$ {{ Str::number_format($balance) }}</h3>
         <a href="{{ route('admin.balance.deposit.index') }}" class='btn btn-primary btn-sm'>Recarregar</a>
-        <a href="{{ route('admin.balance.withdraw.index') }}" class='btn btn-danger btn-sm'>Sacar</a>
+        @if($balance > 0)
+            <a href="{{ route('admin.balance.withdraw.index') }}" class='btn btn-danger btn-sm'>Sacar</a>
+        @endif
     </div>
     <div class="icon">
         <i class="fas fa-money-check-alt "></i>

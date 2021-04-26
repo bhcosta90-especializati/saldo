@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Balance;
 use App\Form\Admin\DepositForm;
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Kris\LaravelFormBuilder\FormBuilder;
 
 class WithdrawController extends Controller
@@ -33,8 +35,14 @@ class WithdrawController extends Controller
         $form->redirectIfNotValid();
 
         $values = $form->getFieldValues();
-        $transaction->withdraw($values);
-
-        return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
+        try {
+            $transaction->withdraw($values);
+            return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
+        } catch (Exception $e) {
+            if ($e->getCode() == Response::HTTP_BAD_REQUEST) {
+                return redirect()->route('admin.balance.index')->with('error', $e->getMessage());
+            }
+            throw $e;
+        }
     }
 }
