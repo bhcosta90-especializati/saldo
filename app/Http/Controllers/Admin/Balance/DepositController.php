@@ -42,7 +42,7 @@ class DepositController extends Controller
             return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
         } catch (Exception $e) {
             if ($e->getCode() == Response::HTTP_BAD_REQUEST) {
-                return redirect()->route('admin.balance.index')->with('error', $e->getMessage());
+                return redirect()->back()->withInput($values)->with('error', $e->getMessage());
             }
             throw $e;
         }
