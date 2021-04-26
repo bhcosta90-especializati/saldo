@@ -234,6 +234,22 @@ return [
             'url'  => 'admin',
             'icon'  => 'fas fa-home',
         ],
+        [
+            'text' => 'Financeiro',
+            'icon'  => 'fas fa-money-check-alt',
+            'submenu' => [
+                [
+                    'text' => 'Saldo',
+                    'icon' => 'fas fa-credit-card',
+                    'url'  => '/admin/balance',
+                ],
+                [
+                    'text' => 'Histórico',
+                    'icon' => 'fas fa-history',
+                    'url'  => '#',
+                ]
+            ]
+        ],
     ],
 
     /*

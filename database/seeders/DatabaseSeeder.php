@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         if (!\App\Models\User::where('email', $email = 'local@local.com')->count()) {
-            \App\Models\User::factory()->create(['email' => $email]);    
+            $user = \App\Models\User::factory()->create(['email' => $email]);    
+            $user->balance()->create(['value' => 50.89]);
         }
         \App\Models\User::factory(rand(1, 15))->create();
     }

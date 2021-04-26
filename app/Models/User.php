@@ -41,4 +41,35 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the post's image.
+     */
+    public function balance()
+    {
+        return $this->morphOne(Balance::class, 'balance');
+    }
+
+    /**
+     * Get the post's image.
+     */
+    public function transactions()
+    {
+        return $this->morphMany(Transaction::class, 'transactions');
+    }
+
+    public function scopeMyBalance($b, $formated = false)
+    {
+        $ret = $b->where('users.id', $this->id)
+            ->select(['balance.value'])
+            ->join('balance', 'users.id', '=', 'balance.balance_id')
+            ->where('balance.balance_type', User::class)
+            ->first()?->value;
+
+        if ($formated == true) {
+            $ret = number_format($ret, 2, ',', '.');
+        }
+
+        return $ret;
+    }
 }
