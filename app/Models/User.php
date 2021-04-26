@@ -61,10 +61,10 @@ class User extends Authenticatable
     public function scopeMyBalance($b, $formated = false)
     {
         $ret = $b->where('users.id', $this->id)
-            ->select(['balance.value'])
+            ->select(['balance.amount'])
             ->join('balance', 'users.id', '=', 'balance.balance_id')
             ->where('balance.balance_type', User::class)
-            ->first()?->value;
+            ->first()?->amount;
 
         if ($formated == true) {
             $ret = number_format($ret, 2, ',', '.');

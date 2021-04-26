@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Exception;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 
 /**
@@ -21,17 +22,17 @@ class UserRepository extends BaseRepository implements Contracts\UserContract
 
     public function deposit(int $user, float $value) {
         $objUser = $this->getById($user);
-
-        $objUser->transactions()->create([
-            'value' => $value
-        ]);
+        $objBalance = $objUser->balance()->firstOrCreate();
+        if(!$objBalance->deposit($value)){
+            throw new Exception(__('Aconteceu um problema no depósito'));
+        }
     }
 
     public function withdraw(int $user, float $value) {
         $objUser = $this->getById($user);
-        
-        $objUser->transactions()->create([
-            'value' => $value
-        ]);
+        $objBalance = $objUser->balance()->firstOrCreate();
+        if(!$objBalance->withdraw($value)){
+            throw new Exception(__('Aconteceu um problema no saque'));
+        }
     }
 }

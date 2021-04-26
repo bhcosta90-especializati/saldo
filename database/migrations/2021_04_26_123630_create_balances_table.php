@@ -16,7 +16,7 @@ class CreateBalancesTable extends Migration
         Schema::create('balance', function (Blueprint $table) {
             $table->id();
             $table->morphs('balance');
-            $table->decimal('value')->default(0);
+            $table->decimal('amount')->default(0);
             $table->timestamps();
         });
     }
