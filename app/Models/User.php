@@ -58,8 +58,16 @@ class User extends Authenticatable
         return $this->morphMany(Transaction::class, 'transaction');
     }
 
-    public function myBalance(): float
+    public function myBalance(): float|null
     {
         return $this->balance()->first()?->amount;
+    }
+
+    public function scopeByName($q, $name){
+        return $name ? $q->where('name', 'like', "%{$name}%") : $q;
+    }
+
+    public function scopeByEmail($q, $email){
+        return $email ? $q->where('email', $email) : $q;
     }
 }

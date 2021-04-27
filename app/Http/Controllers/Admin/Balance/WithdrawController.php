@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Balance;
 
-use App\Form\Admin\DepositForm;
+use App\Form\Admin\WithdrawForm;
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use Exception;
@@ -14,20 +14,20 @@ class WithdrawController extends Controller
 {
     public function index(FormBuilder $formBuilder)
     {
-        $form = $formBuilder->create(DepositForm::class, [
+        $form = $formBuilder->create(WithdrawForm::class, [
             'method' => 'POST',
             'url' => route('admin.balance.withdraw.store')
         ])->add('btn', 'submit', [
             "attr" => ['class' => 'btn btn-primary'],
-            'label' => __('Enviar')
+            'label' => __('Sacar')
         ]);
 
         return view('admin.balance.withdraw.form', compact('form'));
     }
 
-    public function store(FormBuilder $formBuilder, UserService $transaction)
+    public function store(FormBuilder $formBuilder, UserService $userService)
     {
-        $form = $formBuilder->create(DepositForm::class, [
+        $form = $formBuilder->create(WithdrawForm::class, [
             'method' => 'POST',
             'url' => route('admin.balance.withdraw.store')
         ]);
@@ -36,7 +36,7 @@ class WithdrawController extends Controller
 
         $values = $form->getFieldValues();
         try {
-            $transaction->withdraw($values);
+            $userService->withdraw($values);
             return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
         } catch (Exception $e) {
             if ($e->getCode() == Response::HTTP_BAD_REQUEST) {

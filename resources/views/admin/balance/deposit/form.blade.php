@@ -2,7 +2,7 @@
 
 
 @section('content_header')
-    <h1>Recarga</h1>
+    <h1>{{ __('Recarga') }}</h1>
 @stop
 
 @section('title') {{ __('Recarga') }} @stop

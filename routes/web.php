@@ -24,12 +24,20 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::group(['as' => 'balance.', 'prefix' => 'balance'], function(){
         Route::get('/', [App\Http\Controllers\Admin\BalanceController::class, 'index'])->name('index');
         Route::group(['as' => 'deposit.', 'prefix' => "deposit"], function(){
-            Route::get('/balance', [App\Http\Controllers\Admin\Balance\DepositController::class, 'index'])->name('index');
-            Route::post('/balance', [App\Http\Controllers\Admin\Balance\DepositController::class, 'store'])->name('store');
+            Route::get('/', [App\Http\Controllers\Admin\Balance\DepositController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\Balance\DepositController::class, 'store'])->name('store');
         });
         Route::group(['as' => 'withdraw.', 'prefix' => "withdraw"], function(){
-            Route::get('/balance', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'index'])->name('index');
-            Route::post('/balance', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'store'])->name('store');
+            Route::get('/', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\Balance\WithdrawController::class, 'store'])->name('store');
+        });
+        Route::group(['as' => 'transfer.', 'prefix' => "transfer"], function(){
+            Route::get('/', [App\Http\Controllers\Admin\Balance\TransferController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\Admin\Balance\TransferController::class, 'store'])->name('store');
+            Route::get('/search', [App\Http\Controllers\Admin\Balance\TransferController::class, 'search'])->name('search');
+
+            Route::get('/create/{id}', [App\Http\Controllers\Admin\Balance\TransferController::class, 'create'])->name('create.get');
+            Route::post('/create/{id}', [App\Http\Controllers\Admin\Balance\TransferController::class, 'createPost'])->name('create.post');
         });
     });
 });

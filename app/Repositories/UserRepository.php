@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository implements Contracts\UserContract
 
             $objBalance = $objUser->balance()->firstOrCreate();
             if (!$objBalance->deposit($value)) {
-                throw new Exception(__('Aconteceu um problema no depósito'));
+                throw new Exception(__('Aconteceu um problema no depósito'), Response::HTTP_BAD_REQUEST);
             }
 
             $objUser->transactions()->create([
@@ -83,9 +83,75 @@ class UserRepository extends BaseRepository implements Contracts\UserContract
         }
     }
 
+    public function search(int $userLoging, array $data){
+        $result = $this->model->where('id', '!=', $userLoging)->where(function($q) use($data){
+            $q->where(function($q) use($data){
+                $q->byName($data['name']);
+            })->orWhere(function($q) use($data){
+                $q->byEmail($data['name']);
+            });
+        });
+
+        return $result->get();
+    }
+
+    public function transfer(int $user, int $userTo, float $value){
+        try {
+            $objUser = $this->getById($user);
+            $objUserTo = $this->getById($userTo);
+
+            $totalBefore = $objUser->myBalance();
+            $totalBeforeTo = $objUserTo->myBalance();
+
+            if ($totalBefore < $value) {
+                throw new Exception(__('Saldo insuficiente.'), Response::HTTP_BAD_REQUEST);
+            }
+
+            $objBalance = $objUser->balance()->firstOrCreate();
+            if (!$objBalance->withdraw($value)) {
+                throw new Exception(__('Aconteceu um problema no saque'), Response::HTTP_BAD_REQUEST);
+            }
+
+            $objBalanceTo = $objUserTo->balance()->firstOrCreate();
+            if (!$objBalanceTo->deposit($value)) {
+                throw new Exception(__('Aconteceu um problema no depósito'), Response::HTTP_BAD_REQUEST);
+            }
+
+            $objUser->transactions()->create([
+                'amount' => $value,
+                'total_before' => (float) $totalBefore,
+                'total_after' => (float) ($totalBefore - $value),
+                'transaction_to_type' => get_class($objUserTo),
+                'transaction_to_id' => $objUserTo->id,
+                'date' => Carbon::now(),
+                'type' => 'T'
+            ]);
+
+            $objUserTo->transactions()->create([
+                'amount' => $value,
+                'total_before' => (float) $totalBeforeTo,
+                'total_after' => (float) ($totalBeforeTo + $value),
+                'transaction_to_type' => get_class($objUser),
+                'transaction_to_id' => $objUser->id,
+                'date' => Carbon::now(),
+                'type' => 'T'
+            ]);
+
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
     public function balance($user)
     {
         $objUser = $this->getById($user);
         return $objUser->myBalance(true);
+    }
+
+    public function getByUuid(string $uuid){
+        return $this->model->where('uuid', $uuid)->first();
     }
 }

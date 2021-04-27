@@ -21,13 +21,13 @@ class DepositController extends Controller
             'url' => route('admin.balance.deposit.store')
         ])->add('btn', 'submit', [
             "attr" => ['class' => 'btn btn-primary'],
-            'label' => __('Enviar')
+            'label' => __('Depositar')
         ]);
 
         return view('admin.balance.deposit.form', compact('form'));
     }
 
-    public function store(FormBuilder $formBuilder, UserService $transaction)
+    public function store(FormBuilder $formBuilder, UserService $userService)
     {
         $form = $formBuilder->create(DepositForm::class, [
             'method' => 'POST',
@@ -38,7 +38,7 @@ class DepositController extends Controller
 
         $values = $form->getFieldValues();
         try {
-            $transaction->deposit($values);
+            $userService->deposit($values);
             return redirect()->route('admin.balance.index')->with('success', __('Saque realizado com sucesso'));
         } catch (Exception $e) {
             if ($e->getCode() == Response::HTTP_BAD_REQUEST) {
