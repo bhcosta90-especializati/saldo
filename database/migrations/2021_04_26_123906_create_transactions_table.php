@@ -15,6 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->morphs('transaction');
             $table->nullableMorphs('transaction_to');
             $table->decimal('amount', 40, 3);

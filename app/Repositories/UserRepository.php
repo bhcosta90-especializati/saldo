@@ -134,7 +134,7 @@ class UserRepository extends BaseRepository implements Contracts\UserContract
                 'transaction_to_type' => get_class($objUser),
                 'transaction_to_id' => $objUser->id,
                 'date' => Carbon::now(),
-                'type' => 'T'
+                'type' => 'I'
             ]);
 
             DB::commit();

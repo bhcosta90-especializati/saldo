@@ -64,10 +64,10 @@ class User extends Authenticatable
     }
 
     public function scopeByName($q, $name){
-        return $name ? $q->where('name', 'like', "%{$name}%") : $q;
+        return !empty($name) ? $q->where('name', 'like', "%{$name}%") : $q;
     }
 
     public function scopeByEmail($q, $email){
-        return $email ? $q->where('email', $email) : $q;
+        return !empty($email) ? $q->where('email', $email) : $q;
     }
 }

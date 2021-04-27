@@ -245,8 +245,8 @@ return [
                     'active' => ['admin/balance/*']
                 ],
                 [
-                    'text' => 'Histórico',
-                    'icon' => 'fas fa-history',
+                    'text' => 'Transações',
+                    'icon' => 'fas fa-exchange-alt',
                     'url'  => 'admin/transactions',
                 ]
             ]

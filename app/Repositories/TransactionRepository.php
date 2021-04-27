@@ -19,4 +19,17 @@ class TransactionRepository extends BaseRepository implements Contracts\Transact
     {
         return Transaction::class;
     }
+
+    public function getTransactions($obj, array $filters)
+    {
+        return $this->model
+            ->orderBy('created_at', 'DESC')
+            ->with(['transaction_to'])
+            ->byUser($obj)
+            ->byEmail($filters['email'] ?? null)
+            ->byDate($filters['date'] ?? null)
+            ->byType($filters['type'] ?? null)
+            ->byUuid($filters['id'] ?? null)
+            ->paginate(30);
+    }
 }
